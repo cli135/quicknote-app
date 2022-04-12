@@ -1,24 +1,12 @@
 import React, { Component } from "react";
-import Note from "./components/Note";
-import { Container, List, Fab, withStyles } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-
-
-const styles = {
-  fab: {
-    position: 'absolute',
-    bottom: "2rem",
-    right: "2rem",
-  }
-};
-
-// I think Material-UI makes it look nice
+import { Container } from "@material-ui/core";
+import DisplayNotes from "./pages/DisplayNotes";
+import AddNote from "./pages/AddNote";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // array of objects, commas after elements in array
       notes: [
         {
           id: "5c83c052-60da-425f-a302-9d4735a9d6ae",
@@ -39,53 +27,23 @@ class App extends Component {
     };
   }
 
-  // in app which stores multiple notes, the array of notes,
-  // we can delete a note
   deleteNote = (note) => {
     this.setState((state) => {
-      // merge with a copy minus the note we want to delete
       return {
         notes: state.notes.filter((n) => n.id !== note.id),
       };
     });
   };
 
-  // render() {
-  //   // toString()
-  //   // I don't know why the arguments are like this
-  //   return <pre>{JSON.stringify(this.state.notes, null, 2)}</pre>;
-  // }
-
   render() {
     const { notes } = this.state;
-    // ok so we are rendering the notes as an array??\
-    // how to interpret arrow funcs
     return (
       <Container>
-        <List>
-          {notes.map((note, index) => {
-            // passing in note and index for like how to render the note using Material UI components
-            // passing in deleteNote to give it a way to call back up and tell App to delete the note
-            // delete note would require a parameter so something like
-            // this.props.deleteNote(this); // since the argument is the note
-            // itself that should be deleted
-            // ok nevermind note is the object in the array that needs
-            // to be deleted, separate from the Note component that exists
-            // so we can't 'delete' the Note component we would have to unmount it from DOM instead
-            // so we just have to pass the note object (in the array)
-            // itself into the deleteNote method
-            // to remove it from the array so it is not rendered.
-            // maybe it will unmount later
-            return <Note note={note} key={index} deleteNote={this.deleteNote}/>;
-          })}
-        </List>
-        <Fab aria-label={"Add"} className={this.props.classes.fab}>
-          <Add />
-        </Fab>
+        <DisplayNotes notes={notes} deleteNote={this.deleteNote} />
+        <AddNote />
       </Container>
-    ); // what is fab
+    );
   }
-
 }
 
-export default withStyles(styles)(App);
+export default App;
