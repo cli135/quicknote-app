@@ -37,6 +37,20 @@ class App extends Component {
     });
   };
 
+
+  // this adds a note to the sibling array
+  // it has with note
+  // so it is passed into the child component
+  // and the child calls it to send its form state
+  // back up to the parent and modify the parent array
+  addNote = (note) => {
+    this.setState((state) => {
+      return {
+        notes: [...state.notes, note],
+      };
+    });
+  }
+
   // we need a better solution
   // because this doesn't user browser's back and forward button
   // like url and browser history
@@ -78,11 +92,19 @@ class App extends Component {
             <DisplayNotes notes={notes} deleteNote={this.deleteNote} />
           </Route>
           <Route path="/add">
-            <AddNote />
+            
+            <AddNote addNote={this.addNote} />
           </Route>
         </Switch>
       </Container>
     );
+    // ok debugging lesson learned
+    // case sensitive prop names
+    // i put in "addnote" instead and it didn't work
+    
+    // debugging in js:
+    // console.log(); statements
+    // to see where you're getting to
   }
 
 

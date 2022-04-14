@@ -12,7 +12,7 @@ const styles = {
 };
 
 function DisplayNotes(props) {
-  const { notes, deleteNote, classes, changePage } = props;
+  const { notes, deleteNote, classes} = props;
   return (
     <>
       <List>
@@ -20,16 +20,22 @@ function DisplayNotes(props) {
           return <Note note={note} key={index} deleteNote={deleteNote} />;
         })}
       </List>
-      <Fab
-      // ok basically having the onClick call the changePage prop
-      // to go up the 'call stack' or the inheritance chain
-      // and tell the App.js to switch its homepage state
+      <Link to="/add">
+        <Fab
+        // before:
+        // ok basically having the onClick call the changePage prop
+        // to go up the 'call stack' or the inheritance chain
+        // and tell the App.js to switch its homepage state
+        // now: link is basically like <a> tag in html
+        // it will take us to a new url in the 'history' or sthg
         aria-label={"Add"}
-        className={classes.fab}
-        onClick={() => changePage()}
-      >
-        <Add />
-      </Fab>
+          className={classes.fab}
+          
+        >
+          <Add />
+        </Fab>
+      </Link>
+      
     </>
   );
 }
