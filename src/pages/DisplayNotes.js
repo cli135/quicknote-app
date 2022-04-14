@@ -1,6 +1,7 @@
 import { List, Fab, withStyles } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import Note from "../components/Note";
+import { Link } from "react-router-dom";
 
 const styles = {
   fab: {
@@ -11,7 +12,7 @@ const styles = {
 };
 
 function DisplayNotes(props) {
-  const { notes, deleteNote, classes } = props;
+  const { notes, deleteNote, classes, changePage } = props;
   return (
     <>
       <List>
@@ -19,7 +20,14 @@ function DisplayNotes(props) {
           return <Note note={note} key={index} deleteNote={deleteNote} />;
         })}
       </List>
-      <Fab aria-label={"Add"} className={classes.fab}>
+      <Fab
+      // ok basically having the onClick call the changePage prop
+      // to go up the 'call stack' or the inheritance chain
+      // and tell the App.js to switch its homepage state
+        aria-label={"Add"}
+        className={classes.fab}
+        onClick={() => changePage()}
+      >
         <Add />
       </Fab>
     </>

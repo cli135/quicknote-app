@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Container } from "@material-ui/core";
 import DisplayNotes from "./pages/DisplayNotes";
 import AddNote from "./pages/AddNote";
+import { Route, Switch } from "react-router";
+
 
 class App extends Component {
   constructor(props) {
@@ -35,15 +37,55 @@ class App extends Component {
     });
   };
 
+  // we need a better solution
+  // because this doesn't user browser's back and forward button
+  // like url and browser history
+  // to navigate between views
+  // each view should have separate url and we will 
+  // use react routing to handle the details of actually
+  // giving each page its own url
+  // // toggle homepage
+  // changePage = () => {
+  //   this.setState((state) => {
+  //     return {
+  //       showHomepage: !state.showHomepage,
+  //     };
+  //   });
+  // };
+
+  // before: we were using a ternary operator with showHomepage
+  // ternary operator instead of if statement in jsx react
+  // use boolean as a deciding factor/flag
+  // to display homepage or not
+  // (one component or the other component)
+
+  // now: we are using react routing to allow us to
+  // use back button to navigate to diff urls on the same webpage
+  // so it preserves browser history when changing views
+  // so back button and bookmarks etc. work correctly
+  // instead of going under the rader changing views as before
+  // e.g. helps browser know more about the view changing
+  // to implement the back button etc. 
   render() {
     const { notes } = this.state;
+    // one path is the home path
+    // another path is the add path
+    // switch switches between the two paths/routes
     return (
       <Container>
-        <DisplayNotes notes={notes} deleteNote={this.deleteNote} />
-        <AddNote />
+        <Switch>
+          <Route exact path="/">
+            <DisplayNotes notes={notes} deleteNote={this.deleteNote} />
+          </Route>
+          <Route path="/add">
+            <AddNote />
+          </Route>
+        </Switch>
       </Container>
     );
   }
+
+
 }
 
 export default App;
