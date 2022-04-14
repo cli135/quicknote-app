@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Container } from "@material-ui/core";
 import DisplayNotes from "./pages/DisplayNotes";
-import AddNote from "./pages/AddNote";
+import UpsertNote from "./pages/UpsertNote";
 import { Route, Switch } from "react-router";
+import { v4 as uuidv4 } from "uuid";
 
 
 class App extends Component {
@@ -46,10 +47,19 @@ class App extends Component {
   addNote = (note) => {
     this.setState((state) => {
       return {
-        notes: [...state.notes, note],
+        notes: [...state.notes, Object.assign(note, { id: uuidv4() })],
       };
     });
   }
+
+  editNote = (note) => {
+    this.setState((state) => {
+      return {
+        notes: state.notes.map(n => n.id === note.id ? note : n),
+      };
+    });
+  };
+  
 
   // we need a better solution
   // because this doesn't user browser's back and forward button
@@ -93,7 +103,10 @@ class App extends Component {
           </Route>
           <Route path="/add">
             
-            <AddNote addNote={this.addNote} />
+            <UpsertNote upsertNote={this.addNote} />
+          </Route>
+          <Route path="/edit">
+            <UpsertNote upsertNote={this.editNote} />
           </Route>
         </Switch>
       </Container>

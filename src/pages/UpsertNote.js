@@ -1,8 +1,22 @@
+
+
 import React, { Component } from "react";
-import { FormControl, TextField, Button } from "@material-ui/core";
+import { FormControl, TextField, Button, Paper} from "@material-ui/core";
 import { withRouter } from "react-router";
 
-class AddNote extends Component {
+const styles = {
+  form: {
+    marginTop: "2rem",
+    marginBottom: "1rem",
+    padding: "1rem",
+  },
+  paper: {
+    marginBottom: "1rem",
+  },
+};
+
+
+class UpsertNote extends Component {
   constructor(props) {
     super(props); // always need this line
     // when you have props
@@ -12,6 +26,20 @@ class AddNote extends Component {
     };
   }
 
+
+  componentDidMount() {
+    const { state } = this.props.location;
+    if (state) {
+      const { id, title, text } = state;
+      this.setState({
+        id,
+        title,
+        text,
+      });
+    }
+  }
+
+    
   updateTitle = (event) => {
     this.setState({
       title: event.target.value,
@@ -33,7 +61,7 @@ class AddNote extends Component {
     // as whatever is the text field right now
     // e.g. converting your entered text
     // into an entry in App.js's notes array
-    this.props.addNote(this.state);
+    this.props.upsertNote(this.state);
     console.log(this.state);
     console.log("here");
     // the current state consists of title and text entry
@@ -72,25 +100,29 @@ class AddNote extends Component {
   // a passed in prop function
   render() {
     return (
-      <form>
-        <FormControl fullWidth>
-          <TextField
-            label="Title"
-            variant="outlined"
-            value={this.state.title}
-            onChange={this.updateTitle}
-          />
-        </FormControl>
-        <FormControl fullWidth>
-          <TextField
-            label="Text"
-            multiline
-            rows={4}
-            variant="outlined"
-            value={this.state.text}
-            onChange={this.updateText}
-          />
-        </FormControl>
+     <form style={styles.form}>
+       <Paper elevation={3} style={styles.paper}>
+          <FormControl fullWidth>
+            <TextField
+              label="Title"
+              variant="outlined"
+              value={this.state.title}
+              onChange={this.updateTitle}
+            />
+          </FormControl>
+       </Paper>
+       <Paper elevation={3} style={styles.paper}>
+          <FormControl fullWidth>
+            <TextField
+              label="Text"
+              multiline
+             rows={6}
+              variant="outlined"
+              value={this.state.text}
+              onChange={this.updateText}
+            />
+          </FormControl>
+       </Paper>
         <div>
           <Button type="button" color="secondary" onClick={this.handleCancel}>
             Cancel
@@ -104,4 +136,5 @@ class AddNote extends Component {
   }
 }
 
-export default withRouter(AddNote);
+
+export default withRouter(UpsertNote);
